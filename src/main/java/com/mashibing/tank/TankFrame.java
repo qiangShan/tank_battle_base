@@ -8,10 +8,10 @@ import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
 
-    int x=200,y=200;
-
+    private static final int GAME_WIDTH=960,GAME_HEIGHT=720;
+    Tank myTank=new Tank(200,200,Dir.DOWN);
     public TankFrame(){
-        this.setSize(960,720);
+        this.setSize(GAME_WIDTH,GAME_HEIGHT);
         this.setResizable(false);
         this.setTitle("tank_battle");
         this.setVisible(true);
@@ -26,9 +26,28 @@ public class TankFrame extends Frame {
         });
     }
 
+    /**
+    //解决游戏中的双闪问题
+    Image offScreenImage=null;
     @Override
-    public void paint(Graphics g){
-        g.fillRect(x,y,50,50);
+    public void update(Graphics graphics){
+        if(offScreenImage == null){
+            offScreenImage=this.createImage(GAME_WIDTH,GAME_HEIGHT);
+        }
+        Graphics gOffSecreen = offScreenImage.getGraphics();
+        Color color=gOffSecreen.getColor();
+        gOffSecreen.setColor(Color.BLACK);
+        gOffSecreen.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        gOffSecreen.setColor(color);
+        paint(gOffSecreen);
+        graphics.drawImage(offScreenImage,0,0,null);
+    }
+     */
+
+    @Override
+    public void paint(Graphics g){  // bjmashibing/tank
+
+        myTank.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter{
@@ -60,6 +79,7 @@ public class TankFrame extends Frame {
                     break;
             }
 
+            setMainTankDir();
 
         }
 
@@ -83,6 +103,17 @@ public class TankFrame extends Frame {
                 default:
                     break;
             }
+
+            setMainTankDir();
+        }
+
+        private void setMainTankDir() {
+
+            if(bL) myTank.setDir(Dir.LEFT);
+            if(bU) myTank.setDir(Dir.UP);
+            if(bR) myTank.setDir(Dir.RIGHT);
+            if(bD) myTank.setDir(Dir.DOWN);
+
         }
     }
 }
