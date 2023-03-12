@@ -29,20 +29,19 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g){
         g.fillRect(x,y,50,50);
-        x += 10;
-        y += 10;
+
     }
 
     class MyKeyListener extends KeyAdapter{
 
         @Override
         public void keyPressed(KeyEvent e) {
-
+            x += 10;
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-
+            y += 10;
         }
     }
 }
