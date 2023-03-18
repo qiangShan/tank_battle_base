@@ -5,13 +5,14 @@ import java.util.Random;
 
 public class Tank {
 
-    private static final int SPEED=3;
+    private static final int SPEED=5;
     public static final int WIDTH=ResourceMgr.goodTankD.getWidth();
     public static final int HEIGHT=ResourceMgr.goodTankD.getHeight();
 
     private int x,y;
     private Dir dir=Dir.DOWN;
     private TankFrame tf=null;
+    Rectangle rect=new Rectangle();
 
     private Random random=new Random();
     private Group group=Group.BAD;
@@ -25,6 +26,12 @@ public class Tank {
         this.dir = dir;
         this.group=group;
         this.tf=tf;
+
+        rect.x=this.x;
+        rect.y=this.y;
+        rect.width=WIDTH;
+        rect.height=HEIGHT;
+
     }
 
     public Group getGroup() {
@@ -112,10 +119,15 @@ public class Tank {
 
         if(this.group == Group.BAD && random.nextInt(100)>95)
             this.fire();
+
         if(this.group == Group.BAD)
             randomDir();
 
         boundsCheck();
+
+        //update rect
+        rect.x=this.x;
+        rect.y=this.y;
     }
 
     //边界碰撞
