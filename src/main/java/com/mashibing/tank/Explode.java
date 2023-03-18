@@ -1,8 +1,10 @@
 package com.mashibing.tank;
 
+import com.mashibing.factory.BaseExplode;
+
 import java.awt.*;
 
-public class Explode {
+public class Explode extends BaseExplode {
 
     public static int WIDTH=ResourceMgr.explodes[0].getWidth();
     public static int HEIGHT=ResourceMgr.explodes[0].getHeight();
@@ -38,6 +40,5 @@ public class Explode {
         if(step>=ResourceMgr.explodes.length){
            tf.explodes.remove(this);
         }
-
     }
 }

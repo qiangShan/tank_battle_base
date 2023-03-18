@@ -1,28 +1,28 @@
-package com.mashibing.tank;
+package com.mashibing.factory;
 
-import com.mashibing.factory.BaseTank;
+import com.mashibing.tank.*;
 
 import java.awt.*;
 import java.util.Random;
 
-public class Tank extends BaseTank {
+public class RectTank extends BaseTank {
 
     private static final int SPEED=5;
-    public static final int WIDTH=ResourceMgr.goodTankD.getWidth();
+    public static final int WIDTH= ResourceMgr.goodTankD.getWidth();
     public static final int HEIGHT=ResourceMgr.goodTankD.getHeight();
 
     private int x,y;
     private Dir dir=Dir.DOWN;
     private TankFrame tf=null;
-    //public Rectangle rect=new Rectangle();
+    public Rectangle rect=new Rectangle();
 
-    private Random random=new Random();
-    //private Group group=Group.BAD;
+    public Random random=new Random();
+    public Group group=Group.BAD;
 
     private boolean moving=true;
     private boolean living=true;
 
-    public Tank(int x, int y, Dir dir ,Group group ,TankFrame tf) {
+    public RectTank(int x, int y, Dir dir , Group group , TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -80,22 +80,10 @@ public class Tank extends BaseTank {
 
         if(!living) tf.tanks.remove(this);
 
-        switch (dir){
-            case LEFT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL ,x ,y,null);
-                break;
-            case UP:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankU : ResourceMgr.badTankU ,x ,y,null);
-                break;
-            case RIGHT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankR : ResourceMgr.badTankR ,x ,y,null);
-                break;
-            case DOWN:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankD : ResourceMgr.badTankD ,x ,y,null);
-                break;
-            default:
-                break;
-        }
+        Color color = g.getColor();
+        g.setColor(group == Group.GOOD ? Color.BLUE : Color.GREEN);
+        g.fillRect(x,y,40,40);
+        g.setColor(color);
 
         move();
 
@@ -136,8 +124,8 @@ public class Tank extends BaseTank {
     private void boundsCheck() {
        if(x<2) x=2;
        if(y<28) y=28;
-       if(x>TankFrame.GAME_WIDTH-Tank.WIDTH-2) x=TankFrame.GAME_WIDTH-Tank.WIDTH-2;
-       if(y>TankFrame.GAME_HEIGHT-Tank.HEIGHT-2) y=TankFrame.GAME_HEIGHT-Tank.HEIGHT-2;
+       if(x>TankFrame.GAME_WIDTH- RectTank.WIDTH-2) x=TankFrame.GAME_WIDTH- RectTank.WIDTH-2;
+       if(y>TankFrame.GAME_HEIGHT- RectTank.HEIGHT-2) y=TankFrame.GAME_HEIGHT- RectTank.HEIGHT-2;
     }
 
     //坦克随机方向
@@ -149,8 +137,8 @@ public class Tank extends BaseTank {
     //开火
     public void fire() {
 
-        int bX=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
-        int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
+        int bX=this.x+ RectTank.WIDTH/2-Bullet.WIDTH/2;
+        int bY=this.y+ RectTank.HEIGHT/2-Bullet.HEIGHT/2;
         tf.bullets.add(tf.gf.createBullet(bX, bY, this.dir, this.group ,this.tf));
     }
 
