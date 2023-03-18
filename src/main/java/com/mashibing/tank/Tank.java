@@ -1,6 +1,7 @@
 package com.mashibing.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Tank {
 
@@ -12,14 +13,26 @@ public class Tank {
     private Dir dir=Dir.DOWN;
     private TankFrame tf=null;
 
-    private boolean moving=false;
+    private Random random=new Random();
+    private Group group=Group.BAD;
+
+    private boolean moving=true;
     private boolean living=true;
 
-    public Tank(int x, int y, Dir dir ,TankFrame tf) {
+    public Tank(int x, int y, Dir dir ,Group group ,TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group=group;
         this.tf=tf;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public boolean isMoving() {
@@ -96,13 +109,18 @@ public class Tank {
                 y += SPEED;
                 break;
         }
+
+        //randomDir();
+        if(random.nextInt(10)>8){
+            this.fire();
+        }
     }
 
     public void fire() {
 
         int bX=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
-        int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2+4;
-        tf.bullets.add(new Bullet(bX, bY, this.dir,tf));
+        int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
+        tf.bullets.add(new Bullet(bX, bY, this.dir,this.group ,tf));
     }
 
     public void die() {
