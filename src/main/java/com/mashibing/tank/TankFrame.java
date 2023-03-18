@@ -16,6 +16,7 @@ public class TankFrame extends Frame {
     Tank myTank=new Tank(200,600,Dir.DOWN,Group.GOOD,this);
     public List<Bullet> bullets=new ArrayList<>();
     public List<Tank> tanks=new ArrayList<Tank>();
+    public List<Explode> explodes=new ArrayList<Explode>();
     Explode e=new Explode(100,100,this);
 
     public TankFrame(){
