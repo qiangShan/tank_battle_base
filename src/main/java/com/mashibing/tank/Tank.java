@@ -1,6 +1,13 @@
 package com.mashibing.tank;
 
+import com.mashibing.observer.TankFireEvent;
+import com.mashibing.observer.TankFireHandler;
+import com.mashibing.observer.TankFireObserver;
+
 import java.awt.*;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Tank {
@@ -155,5 +162,14 @@ public class Tank {
 
     public void die() {
         this.living=false;
+    }
+
+    private List<TankFireObserver> fireObservers=Arrays.asList(new TankFireHandler());
+
+    public void handleFireKey() {
+        TankFireEvent event=new TankFireEvent(this);
+        for (TankFireObserver o: fireObservers){
+            o.actionOnFire(event);
+        }
     }
 }
