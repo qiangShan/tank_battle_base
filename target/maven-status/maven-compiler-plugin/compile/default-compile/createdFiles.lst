@@ -7,3 +7,4 @@ com/mashibing/tank/ResourceMgr.class
 com/mashibing/tank/Bullet.class
 com/mashibing/tank/TankFrame$1.class
 com/mashibing/tank/TankFrame.class
+com/mashibing/tank/Group.class

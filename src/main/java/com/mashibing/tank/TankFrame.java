@@ -16,6 +16,7 @@ public class TankFrame extends Frame {
     Tank myTank=new Tank(200,600,Dir.DOWN,Group.GOOD,this);
     public List<Bullet> bullets=new ArrayList<>();
     public List<Tank> tanks=new ArrayList<Tank>();
+    Explode e=new Explode(100,100,this);
 
     public TankFrame(){
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
@@ -59,6 +60,7 @@ public class TankFrame extends Frame {
         g.drawString("子弹的数量:"+bullets.size(),10,60);
         g.drawString("敌人坦克的数量:"+tanks.size(),10,80);
         g.setColor(color);
+
         myTank.paint(g);
 
         //初始化子弹
@@ -77,6 +79,8 @@ public class TankFrame extends Frame {
                 bullets.get(i).collideWith(tanks.get(j));
             }
         }
+
+        e.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter{

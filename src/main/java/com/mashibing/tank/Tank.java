@@ -111,7 +111,7 @@ public class Tank {
         }
 
         //randomDir();
-        if(random.nextInt(10)>8){
+        if(random.nextInt(100)>95){
             this.fire();
         }
     }
