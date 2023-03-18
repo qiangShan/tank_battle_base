@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Tank {
 
-    private static final int SPEED=2;
+    private static final int SPEED=5;
     public static final int WIDTH=ResourceMgr.tankD.getWidth();
     public static final int HEIGHT=ResourceMgr.tankD.getHeight();
 
