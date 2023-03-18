@@ -4,16 +4,19 @@ import java.awt.*;
 
 public class Tank {
 
+    private static final int SPEED=5;
+
     private int x,y;
     private Dir dir=Dir.DOWN;
-    private static final int SPEED=5;
+    private TankFrame tf=null;
 
     private boolean moving=false;
 
-    public Tank(int x, int y, Dir dir) {
+    public Tank(int x, int y, Dir dir ,TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf=tf;
     }
 
     public boolean isMoving() {
@@ -75,5 +78,10 @@ public class Tank {
                 y += SPEED;
                 break;
         }
+    }
+
+    public void fire() {
+
+       tf.bullet=new Bullet(this.x, this.y, this.dir);
     }
 }
