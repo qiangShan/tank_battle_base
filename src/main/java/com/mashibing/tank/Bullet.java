@@ -29,6 +29,8 @@ public class Bullet {
         rect.width=WIDTH;
         rect.height=HEIGHT;
 
+        tf.bullets.add(this);
+
     }
 
     public int getX() {

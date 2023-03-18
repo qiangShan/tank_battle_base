@@ -1,5 +1,9 @@
 package com.mashibing.tank;
 
+import com.mashibing.strategy.DefaultFireStrategy;
+import com.mashibing.strategy.FireStrategy;
+import com.mashibing.strategy.FourDirFireStrategy;
+
 import java.awt.*;
 import java.util.Random;
 
@@ -9,16 +13,20 @@ public class Tank {
     public static final int WIDTH=ResourceMgr.goodTankD.getWidth();
     public static final int HEIGHT=ResourceMgr.goodTankD.getHeight();
 
-    private int x,y;
-    private Dir dir=Dir.DOWN;
-    private TankFrame tf=null;
+    public int x,y;
+    public Dir dir=Dir.DOWN;
+    public TankFrame tf=null;
     Rectangle rect=new Rectangle();
 
     private Random random=new Random();
-    private Group group=Group.BAD;
+    public Group group=Group.BAD;
 
     private boolean moving=true;
     private boolean living=true;
+
+    //FireStrategy fireStrategy=new DefaultFireStrategy();
+    //FireStrategy fireStrategy=new FourDirFireStrategy();
+    FireStrategy fireStrategy;
 
     public Tank(int x, int y, Dir dir ,Group group ,TankFrame tf) {
         this.x = x;
@@ -31,6 +39,22 @@ public class Tank {
         rect.y=this.y;
         rect.width=WIDTH;
         rect.height=HEIGHT;
+
+        if(group == Group.GOOD){
+            String goodFSName=(String) PropertyMgr.get("goodFS");
+            try {
+                fireStrategy=(FireStrategy) Class.forName(goodFSName).getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            String badFSName=(String) PropertyMgr.get("badFS");
+            try {
+                fireStrategy=(FireStrategy) Class.forName(badFSName).getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -145,11 +169,8 @@ public class Tank {
     }
 
     //开火
-    public void fire() {
-
-        int bX=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
-        int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
-        tf.bullets.add(new Bullet(bX, bY, this.dir, this.group ,this.tf));
+    public void fire() {  //fire(FireStrategy)  每次调用需要new,应该把DefaultStrategy 定义为单例模式
+        fireStrategy.fire(this);
     }
 
 
