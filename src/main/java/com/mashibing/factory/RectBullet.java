@@ -1,14 +1,13 @@
-package com.mashibing.tank;
+package com.mashibing.factory;
 
-import com.mashibing.factory.BaseBullet;
-import com.mashibing.factory.BaseTank;
+import com.mashibing.tank.*;
 
 import java.awt.*;
 
-public class Bullet extends BaseBullet {
+public class RectBullet extends BaseBullet {
 
     private static final int SPEED=10;
-    public static final int WIDTH=ResourceMgr.bulletD.getWidth();
+    public static final int WIDTH= ResourceMgr.bulletD.getWidth();
     public static final int HEIGHT=ResourceMgr.bulletD.getHeight();
 
     private int x,y;
@@ -20,7 +19,7 @@ public class Bullet extends BaseBullet {
 
     private boolean living =true;
 
-    public Bullet(int x, int y, Dir dir ,Group group , TankFrame tf) {
+    public RectBullet(int x, int y, Dir dir , Group group , TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -72,22 +71,10 @@ public class Bullet extends BaseBullet {
             tf.bullets.remove(this);
         }
 
-        switch (dir){
-            case LEFT:
-                g.drawImage(ResourceMgr.bulletL,x,y,null);
-                break;
-            case UP:
-                g.drawImage(ResourceMgr.bulletU,x,y,null);
-                break;
-            case RIGHT:
-                g.drawImage(ResourceMgr.bulletR,x,y,null);
-                break;
-            case DOWN:
-                g.drawImage(ResourceMgr.bulletD,x,y,null);
-                break;
-            default:
-                break;
-        }
+        Color color=g.getColor();
+        g.setColor(Color.YELLOW);
+        g.fillRect(x,y,20,20);
+        g.setColor(color);
 
         move();
     }
