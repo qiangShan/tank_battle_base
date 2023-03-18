@@ -1,8 +1,4 @@
-import com.mashibing.tank.Dir;
-import com.mashibing.tank.Group;
-import com.mashibing.tank.Tank;
-import com.mashibing.tank.TankFrame;
-
+import com.mashibing.tank.*;
 
 
 public class Main {
@@ -11,8 +7,11 @@ public class Main {
 
         TankFrame tf=new TankFrame();
 
+        int initTankCount =Integer.parseInt((String)PropertyMgr.get("initTankCount")) ;
+
+
         //初始化敌方坦克
-        for(int i=0;i<5;i++){
+        for(int i=0;i<initTankCount;i++){
             tf.tanks.add(new Tank(50+i*80,200, Dir.DOWN, Group.BAD,tf));
         }
 
