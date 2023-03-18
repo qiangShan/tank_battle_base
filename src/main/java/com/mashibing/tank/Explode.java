@@ -1,5 +1,7 @@
 package com.mashibing.tank;
 
+import com.mashibing.facade.GameModel;
+
 import java.awt.*;
 
 public class Explode {
@@ -8,13 +10,13 @@ public class Explode {
     public static int HEIGHT=ResourceMgr.explodes[0].getHeight();
 
     private int x,y;
-    TankFrame tf;
+    GameModel gm=null;
     private int step=0;
 
-    public Explode(int x, int y, TankFrame tf) {
+    public Explode(int x, int y, GameModel gm) {
         this.x = x;
         this.y = y;
-        this.tf = tf;
+        this.gm = gm;
     }
 
     public int getX() {
@@ -36,7 +38,7 @@ public class Explode {
     public void paint(Graphics g){
         g.drawImage(ResourceMgr.explodes[step++] , x, y,null);
         if(step>=ResourceMgr.explodes.length){
-           tf.explodes.remove(this);
+           gm.explodes.remove(this);
         }
 
     }
