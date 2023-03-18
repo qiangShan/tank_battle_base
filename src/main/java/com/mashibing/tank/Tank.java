@@ -1,7 +1,10 @@
 package com.mashibing.tank;
 
+import com.mashibing.netty.TankJoinMsg;
+
 import java.awt.*;
 import java.util.Random;
+import java.util.UUID;
 
 public class Tank {
 
@@ -20,6 +23,9 @@ public class Tank {
     private boolean moving=true;
     private boolean living=true;
 
+    UUID id=UUID.randomUUID();
+    TankJoinMsg tankJoinMsg;
+
     public Tank(int x, int y, Dir dir ,Group group ,TankFrame tf) {
         this.x = x;
         this.y = y;
@@ -32,6 +38,18 @@ public class Tank {
         rect.width=WIDTH;
         rect.height=HEIGHT;
 
+    }
+
+    public Tank(TankJoinMsg tankJoinMsg) {
+        this.tankJoinMsg=tankJoinMsg;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public Group getGroup() {
@@ -77,6 +95,11 @@ public class Tank {
     public void paint(Graphics g) {
 
         if(!living) tf.tanks.remove(this);
+
+        Color color=g.getColor();
+        g.setColor(Color.YELLOW);
+        g.drawString(id.toString(), this.x, this.y-10);
+        g.setColor(color);
 
         switch (dir){
             case LEFT:

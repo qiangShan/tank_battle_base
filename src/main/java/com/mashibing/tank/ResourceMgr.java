@@ -5,10 +5,21 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class ResourceMgr {
+
+    private static ResourceMgr instance=new ResourceMgr();
+
     public static BufferedImage goodTankL,goodTankU,goodTankR,goodTankD;
     public static BufferedImage badTankL,badTankU,badTankR,badTankD;
     public static BufferedImage bulletL,bulletU,bulletR,bulletD;
     public static BufferedImage[] explodes=new BufferedImage[16];
+
+    private ResourceMgr(){
+
+    }
+
+    public static ResourceMgr getInstance(){
+        return instance;
+    }
 
     static {
         try{
