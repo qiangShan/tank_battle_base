@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Tank {
 
-    private static final int SPEED=5;
+    private static final int SPEED=2;
     public static final int WIDTH=ResourceMgr.tankD.getWidth();
     public static final int HEIGHT=ResourceMgr.tankD.getHeight();
 
@@ -111,16 +111,14 @@ public class Tank {
         }
 
         //randomDir();
-        if(random.nextInt(100)>95){
-            this.fire();
-        }
+        if(random.nextInt(100)>95) this.fire();
     }
 
     public void fire() {
 
         int bX=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
         int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
-        tf.bullets.add(new Bullet(bX, bY, this.dir,this.group ,tf));
+        tf.bullets.add(new Bullet(bX, bY, this.dir, this.group ,this.tf));
     }
 
     public void die() {
