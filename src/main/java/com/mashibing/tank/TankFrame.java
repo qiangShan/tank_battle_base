@@ -86,7 +86,6 @@ public class TankFrame extends Frame {
             }
         }
 
-
     }
 
     class MyKeyListener extends KeyAdapter{

@@ -138,17 +138,20 @@ public class Tank {
        if(y>TankFrame.GAME_HEIGHT-Tank.HEIGHT-2) y=TankFrame.GAME_HEIGHT-Tank.HEIGHT-2;
     }
 
+    //坦克随机方向
     private void randomDir() {
         if(this.group == Group.BAD && random.nextInt(100)>95)
             this.dir=Dir.values()[random.nextInt(4)];
     }
 
+    //开火
     public void fire() {
 
         int bX=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
         int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
         tf.bullets.add(new Bullet(bX, bY, this.dir, this.group ,this.tf));
     }
+
 
     public void die() {
         this.living=false;
