@@ -6,16 +6,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class TankFrame extends Frame {
 
+    public static final TankFrame INSTANCE=new TankFrame();
+
     static final int GAME_WIDTH=960,GAME_HEIGHT=720;
 
-    Tank myTank=new Tank(200,600,Dir.DOWN,Group.GOOD,this);
+    Random r=new Random();
+
+    Tank myTank=new Tank(r.nextInt(GAME_WIDTH),r.nextInt(GAME_HEIGHT),Dir.DOWN,Group.GOOD,this);
     public List<Bullet> bullets=new ArrayList<>();
-    public List<Tank> tanks=new ArrayList<Tank>();
+    Map<UUID,Tank> tanks=new HashMap<UUID,Tank>();
     public List<Explode> explodes=new ArrayList<Explode>();
 
     public TankFrame(){
@@ -69,10 +73,15 @@ public class TankFrame extends Frame {
             bullets.get(i).paint(g);
         }
 
+        //java8 stream api
+        tanks.values().stream().forEach((e)->e.paint(g));
+
+        /**
         //画敌人坦克
         for(int i=0 ;i<tanks.size();i++){
             tanks.get(i).paint(g);
         }
+         */
 
         //爆炸展示
         for(int i=0;i<explodes.size();i++){
@@ -86,6 +95,14 @@ public class TankFrame extends Frame {
             }
         }
 
+    }
+
+    public Tank finByUUID(UUID id) {
+        return tanks.get(id);
+    }
+
+    public void addTank(Tank t) {
+        tanks.put(t.getId(),t);
     }
 
     class MyKeyListener extends KeyAdapter{
@@ -160,5 +177,9 @@ public class TankFrame extends Frame {
                 if(bD) myTank.setDir(Dir.DOWN);
             }
         }
+    }
+
+    public Tank getMainTank(){
+        return this.myTank;
     }
 }
