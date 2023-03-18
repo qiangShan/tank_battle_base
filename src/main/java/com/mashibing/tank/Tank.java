@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Tank {
 
-    private static final int SPEED=5;
+    private static final int SPEED=3;
     public static final int WIDTH=ResourceMgr.goodTankD.getWidth();
     public static final int HEIGHT=ResourceMgr.goodTankD.getHeight();
 
@@ -110,8 +110,15 @@ public class Tank {
                 break;
         }
 
-        //randomDir();
-        if(random.nextInt(100)>95) this.fire();
+        if(this.group == Group.BAD && random.nextInt(100)>95)
+            this.fire();
+        if(this.group == Group.BAD)
+            randomDir();
+    }
+
+    private void randomDir() {
+        if(this.group == Group.BAD && random.nextInt(100)>95)
+            this.dir=Dir.values()[random.nextInt(4)];
     }
 
     public void fire() {
