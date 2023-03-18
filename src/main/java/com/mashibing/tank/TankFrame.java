@@ -13,8 +13,9 @@ public class TankFrame extends Frame {
 
     static final int GAME_WIDTH=960,GAME_HEIGHT=720;
 
-    Tank myTank=new Tank(200,200,Dir.DOWN,this);
-    List<Bullet> bullets=new ArrayList<>();
+    Tank myTank=new Tank(200,600,Dir.DOWN,this);
+    public List<Bullet> bullets=new ArrayList<>();
+    public List<Tank> tanks=new ArrayList<Tank>();
 
     public TankFrame(){
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
@@ -56,13 +57,26 @@ public class TankFrame extends Frame {
         Color color = g.getColor();
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量:"+bullets.size(),10,60);
+        g.drawString("敌人坦克的数量:"+tanks.size(),10,80);
         g.setColor(color);
         myTank.paint(g);
 
+        //初始化子弹
         for(int i=0 ;i<bullets.size();i++){
             bullets.get(i).paint(g);
         }
 
+        //画敌人坦克
+        for(int i=0 ;i<tanks.size();i++){
+            tanks.get(i).paint(g);
+        }
+
+        //碰撞检测，判断子弹是否与坦克相撞
+        for(int i=0;i<bullets.size();i++){
+            for(int j=0;j<tanks.size();j++){
+                bullets.get(i).collideWith(tanks.get(j));
+            }
+        }
     }
 
     class MyKeyListener extends KeyAdapter{
