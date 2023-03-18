@@ -12,7 +12,7 @@ public class Tank {
     private Dir dir=Dir.DOWN;
     private TankFrame tf=null;
 
-    private boolean moving=false;
+    private boolean moving=true;
     private boolean living=true;
 
     public Tank(int x, int y, Dir dir ,TankFrame tf) {
