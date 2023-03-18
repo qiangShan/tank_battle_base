@@ -1,17 +1,21 @@
 package com.mashibing.tank;
 
+import com.mashibing.facade.GameModel;
+import com.mashibing.mediator.GameObject;
+
 import java.awt.*;
 import java.util.Random;
 
-public class Tank {
+public class Tank extends GameObject {
 
     private static final int SPEED=5;
     public static final int WIDTH=ResourceMgr.goodTankD.getWidth();
     public static final int HEIGHT=ResourceMgr.goodTankD.getHeight();
 
     private int x,y;
+    //int oldX,oldY;
     private Dir dir=Dir.DOWN;
-    private TankFrame tf=null;
+    public GameModel gm=null;
     Rectangle rect=new Rectangle();
 
     private Random random=new Random();
@@ -20,18 +24,26 @@ public class Tank {
     private boolean moving=true;
     private boolean living=true;
 
-    public Tank(int x, int y, Dir dir ,Group group ,TankFrame tf) {
+    public Tank(int x, int y, Dir dir ,Group group ,GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group=group;
-        this.tf=tf;
+        this.gm=gm;
 
         rect.x=this.x;
         rect.y=this.y;
         rect.width=WIDTH;
         rect.height=HEIGHT;
 
+    }
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
     }
 
     public Group getGroup() {
@@ -74,9 +86,10 @@ public class Tank {
         this.dir = dir;
     }
 
+    @Override
     public void paint(Graphics g) {
 
-        if(!living) tf.tanks.remove(this);
+        if(!living) gm.remove(this);
 
         switch (dir){
             case LEFT:
@@ -100,6 +113,9 @@ public class Tank {
     }
 
     private void move() {
+
+        //oldX=x;
+        //oldY=y;
 
         if(!moving) return;
         switch (dir){
@@ -125,9 +141,14 @@ public class Tank {
 
         boundsCheck();
 
+        //x=oldX;
+        //y=oldY;
+
         //update rect
         rect.x=this.x;
         rect.y=this.y;
+
+
     }
 
     //边界碰撞
@@ -149,11 +170,15 @@ public class Tank {
 
         int bX=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
         int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
-        tf.bullets.add(new Bullet(bX, bY, this.dir, this.group ,this.tf));
+        gm.add(new Bullet(bX, bY, this.dir, this.group ,this.gm));
     }
 
 
     public void die() {
         this.living=false;
+    }
+
+    public void stop(){
+        moving=false;
     }
 }
