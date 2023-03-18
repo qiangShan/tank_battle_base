@@ -5,6 +5,8 @@ import java.awt.*;
 public class Tank {
 
     private static final int SPEED=5;
+    public static final int WIDTH=ResourceMgr.tankD.getWidth();
+    public static final int HEIGHT=ResourceMgr.tankD.getHeight();
 
     private int x,y;
     private Dir dir=Dir.DOWN;
@@ -95,6 +97,8 @@ public class Tank {
 
     public void fire() {
 
-       tf.bullets.add(new Bullet(this.x, this.y, this.dir,tf));
+        int bX=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
+        int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2+4;
+        tf.bullets.add(new Bullet(bX, bY, this.dir,tf));
     }
 }
