@@ -9,7 +9,10 @@ import java.awt.event.WindowEvent;
 public class TankFrame extends Frame {
 
     private static final int GAME_WIDTH=960,GAME_HEIGHT=720;
+
     Tank myTank=new Tank(200,200,Dir.DOWN);
+    Bullet bullet=new Bullet(300,300,Dir.DOWN);
+
     public TankFrame(){
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         this.setResizable(false);
@@ -48,6 +51,7 @@ public class TankFrame extends Frame {
     public void paint(Graphics g){  // bjmashibing/tank
 
         myTank.paint(g);
+        bullet.paint(g);
 
     }
 
