@@ -1,5 +1,7 @@
 package com.mashibing.tank;
 
+import com.mashibing.decorator.RectDecorator;
+import com.mashibing.decorator.TailDecorator;
 import com.mashibing.facade.GameModel;
 import com.mashibing.mediator.GameObject;
 
@@ -12,10 +14,8 @@ public class Tank extends GameObject {
     public static final int WIDTH=ResourceMgr.goodTankD.getWidth();
     public static final int HEIGHT=ResourceMgr.goodTankD.getHeight();
 
-    private int x,y;
     int oldX,oldY;
     private Dir dir=Dir.DOWN;
-    public GameModel gm=null;
     public Rectangle rect=new Rectangle();
 
     private Random random=new Random();
@@ -24,17 +24,18 @@ public class Tank extends GameObject {
     private boolean moving=true;
     private boolean living=true;
 
-    public Tank(int x, int y, Dir dir ,Group group ,GameModel gm) {
+    public Tank(int x, int y, Dir dir ,Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group=group;
-        this.gm=gm;
 
         rect.x=this.x;
         rect.y=this.y;
         rect.width=WIDTH;
         rect.height=HEIGHT;
+
+        GameModel.getInstance().add(this);
 
     }
 
@@ -62,22 +63,6 @@ public class Tank extends GameObject {
         this.moving = moving;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public Dir getDir() {
         return dir;
     }
@@ -89,7 +74,7 @@ public class Tank extends GameObject {
     @Override
     public void paint(Graphics g) {
 
-        if(!living) gm.remove(this);
+        if(!living) GameModel.getInstance().remove(this);
 
         switch (dir){
             case LEFT:
@@ -110,6 +95,16 @@ public class Tank extends GameObject {
 
         move();
 
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 
     public void back(){
@@ -172,7 +167,9 @@ public class Tank extends GameObject {
 
         int bX=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
         int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
-        gm.add(new Bullet(bX, bY, this.dir, this.group ,this.gm));
+        //Bug? new Bullet 把自己又加了一遍
+        GameModel.getInstance().add(
+                new RectDecorator(new TailDecorator(new Bullet(bX , bY, this.dir, this.group))));
     }
 
 

@@ -11,28 +11,25 @@ public class Bullet extends GameObject {
     public static final int WIDTH=ResourceMgr.bulletD.getWidth();
     public static final int HEIGHT=ResourceMgr.bulletD.getHeight();
 
-    private int x,y;
     private Dir dir;
-    public GameModel gm=null;
     private Group group=Group.BAD;
     public Rectangle rect=new Rectangle();
 
 
     private boolean living =true;
 
-    public Bullet(int x, int y, Dir dir ,Group group , GameModel gm) {
+    public Bullet(int x, int y, Dir dir ,Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group=group;
-        this.gm=gm;
 
         rect.x=this.x;
         rect.y=this.y;
         rect.width=WIDTH;
         rect.height=HEIGHT;
 
-        gm.add(this);
+        GameModel.getInstance().add(this);
 
     }
 
@@ -42,22 +39,6 @@ public class Bullet extends GameObject {
 
     public void setRect(Rectangle rect) {
         this.rect = rect;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public Dir getDir() {
@@ -80,7 +61,7 @@ public class Bullet extends GameObject {
     public void paint(Graphics g) {
 
         if(!living){
-            gm.remove(this);
+            GameModel.getInstance().remove(this);
         }
 
         switch (dir){
@@ -101,6 +82,16 @@ public class Bullet extends GameObject {
         }
 
         move();
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 
     private void move() {
