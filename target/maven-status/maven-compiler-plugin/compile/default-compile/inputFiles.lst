@@ -5,6 +5,12 @@
 /Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/tank/TankFrame.java
 /Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/tank/Tank.java
 /Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/tank/ImageUtil.java
+/Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/mediator/GameObject.java
 /Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/tank/Group.java
+/Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/cor/BulletTankCollider.java
+/Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/tank/Wall.java
+/Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/cor/ColliderChain.java
+/Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/cor/TankTankCollider.java
 /Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/tank/Bullet.java
 /Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/tank/Explode.java
+/Users/qiangshan/Downloads/tank-master/tank_battle_base/src/main/java/com/mashibing/cor/Collider.java

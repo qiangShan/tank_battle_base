@@ -2,6 +2,7 @@ package com.mashibing.cor;
 
 import com.mashibing.mediator.GameObject;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,8 +11,18 @@ public class ColliderChain implements Collider{
     private List<Collider> colliders=new LinkedList<>();
 
     public ColliderChain(){
+        /**
+        try {
+            Object o = Class.forName(String.valueOf(colliders)).getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+         */
+
         add(new BulletTankCollider());
         add(new TankTankCollider());
+        add(new BulletWallCollider());
+        add(new TankWallCollider());
     }
 
     public void add(Collider collider){

@@ -15,7 +15,7 @@ public class Bullet extends GameObject {
     private Dir dir;
     public GameModel gm=null;
     private Group group=Group.BAD;
-    Rectangle rect=new Rectangle();
+    public Rectangle rect=new Rectangle();
 
 
     private boolean living =true;

@@ -13,10 +13,10 @@ public class Tank extends GameObject {
     public static final int HEIGHT=ResourceMgr.goodTankD.getHeight();
 
     private int x,y;
-    //int oldX,oldY;
+    int oldX,oldY;
     private Dir dir=Dir.DOWN;
     public GameModel gm=null;
-    Rectangle rect=new Rectangle();
+    public Rectangle rect=new Rectangle();
 
     private Random random=new Random();
     private Group group=Group.BAD;
@@ -112,10 +112,15 @@ public class Tank extends GameObject {
 
     }
 
-    private void move() {
+    public void back(){
+        x=oldX;
+        y=oldY;
+    }
 
-        //oldX=x;
-        //oldY=y;
+    private void move() {
+        //记录移动之前的位置
+        oldX=x;
+        oldY=y;
 
         if(!moving) return;
         switch (dir){
@@ -140,9 +145,6 @@ public class Tank extends GameObject {
             randomDir();
 
         boundsCheck();
-
-        //x=oldX;
-        //y=oldY;
 
         //update rect
         rect.x=this.x;

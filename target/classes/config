@@ -1,2 +1,4 @@
 #tanks count at initialization
 initTankCount=10
+#colliders
+colliders=com.mashibing.cor.BulletTankCollider,com.mashibing.cor.TankTankCollider

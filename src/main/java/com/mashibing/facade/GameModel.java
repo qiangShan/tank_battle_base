@@ -26,6 +26,12 @@ public class GameModel {
         for(int i=0;i<initTankCount;i++){
             add(new Tank(50+i*80,200, Dir.DOWN, Group.BAD,this));
         }
+
+        //初始化墙
+        add(new Wall(150,150,200,50));
+        add(new Wall(550,150,200,50));
+        add(new Wall(300,300,50,200));
+        add(new Wall(550,300,50,200));
     }
 
     public void add(GameObject go){
@@ -38,10 +44,6 @@ public class GameModel {
 
     public void paint(Graphics g) {
         Color color = g.getColor();
-        //g.setColor(Color.WHITE);
-        //g.drawString("子弹的数量:"+bullets.size(),10,60);
-        //g.drawString("敌人坦克的数量:"+tanks.size(),10,80);
-        //g.drawString("爆炸的数量:"+explodes.size(),10,100);
         g.setColor(color);
 
         myTank.paint(g);
