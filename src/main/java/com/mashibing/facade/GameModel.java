@@ -13,18 +13,34 @@ import java.util.List;
 
 public class GameModel {
 
-    Tank myTank=new Tank(200,600, Dir.DOWN, Group.GOOD,this);
+    private static final GameModel INSTANCE=new GameModel();
+
+    Tank myTank;
 
 
     ColliderChain chain=new ColliderChain();
 
     private List<GameObject> objects=new ArrayList<GameObject>();
 
-    public GameModel(){
+    static{
+        INSTANCE.init();
+    }
+    private GameModel(){
+
+    }
+    public static GameModel getInstance(){
+        return INSTANCE;
+    }
+
+    public void init(){
+
+        //初始化主战坦克
+        myTank=new Tank(200,600, Dir.DOWN, Group.GOOD);
+
         int initTankCount =Integer.parseInt((String)PropertyMgr.get("initTankCount")) ;
         //初始化敌方坦克
         for(int i=0;i<initTankCount;i++){
-            add(new Tank(50+i*80,200, Dir.DOWN, Group.BAD,this));
+            new Tank(50+i*80,200, Dir.DOWN, Group.BAD);
         }
 
         //初始化墙

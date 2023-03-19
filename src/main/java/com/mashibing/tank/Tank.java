@@ -15,7 +15,6 @@ public class Tank extends GameObject {
     private int x,y;
     int oldX,oldY;
     private Dir dir=Dir.DOWN;
-    public GameModel gm=null;
     public Rectangle rect=new Rectangle();
 
     private Random random=new Random();
@@ -24,17 +23,18 @@ public class Tank extends GameObject {
     private boolean moving=true;
     private boolean living=true;
 
-    public Tank(int x, int y, Dir dir ,Group group ,GameModel gm) {
+    public Tank(int x, int y, Dir dir ,Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group=group;
-        this.gm=gm;
 
         rect.x=this.x;
         rect.y=this.y;
         rect.width=WIDTH;
         rect.height=HEIGHT;
+
+        GameModel.getInstance().add(this);
 
     }
 
@@ -89,7 +89,7 @@ public class Tank extends GameObject {
     @Override
     public void paint(Graphics g) {
 
-        if(!living) gm.remove(this);
+        if(!living) GameModel.getInstance().remove(this);
 
         switch (dir){
             case LEFT:
@@ -172,7 +172,7 @@ public class Tank extends GameObject {
 
         int bX=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
         int bY=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
-        gm.add(new Bullet(bX, bY, this.dir, this.group ,this.gm));
+        GameModel.getInstance().add(new Bullet(bX, bY, this.dir, this.group));
     }
 
 
