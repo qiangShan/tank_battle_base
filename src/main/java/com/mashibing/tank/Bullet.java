@@ -130,6 +130,7 @@ public class Bullet extends GameObject {
 
     }
 
+    /**
     public boolean collideWith(Tank tank) {
         if(this.group == tank.getGroup())  return false;
 
@@ -144,6 +145,7 @@ public class Bullet extends GameObject {
 
         return  false;
     }
+     */
 
     public void die() {
         this.living=false;

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class TankFrame extends Frame {
 
-    GameModel gm=new GameModel();
+    public GameModel gm=new GameModel();
 
     static final int GAME_WIDTH=960,GAME_HEIGHT=720;
 
@@ -119,6 +119,7 @@ public class TankFrame extends Frame {
 
             setMainTankDir();
         }
+
 
         private void setMainTankDir() {
 
