@@ -20,7 +20,7 @@ public class TankJoinMsgCodecTest {
         UUID id=UUID.randomUUID();
         TankJoinMsg tankJoinMsg=new TankJoinMsg(5,10, Dir.DOWN,true, Group.BAD,id);
         ec.pipeline()
-                .addLast( new TankJoinMsgEncoder());
+                .addLast( new MsgEncoder());
         ec.writeOutbound(tankJoinMsg);
 
         ByteBuf buf=(ByteBuf) ec.readOutbound();
@@ -48,7 +48,7 @@ public class TankJoinMsgCodecTest {
         UUID id=UUID.randomUUID();
         TankJoinMsg tankJoinMsg=new TankJoinMsg(5,10,Dir.DOWN,true,Group.BAD,id);
         ec.pipeline()
-                .addLast( new TankJoinMsgDecoder());
+                .addLast( new MsgDecoder());
 
         ByteBuf buf= Unpooled.buffer();
         buf.writeBytes(tankJoinMsg.toBytes());

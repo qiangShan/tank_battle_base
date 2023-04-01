@@ -1,17 +1,11 @@
 package com.mashibing.netty;
 
-import com.mashibing.tank.Tank;
 import com.mashibing.tank.TankFrame;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.ReferenceCountUtil;
-
-import java.nio.charset.StandardCharsets;
 
 public class Client {
 
@@ -69,8 +63,8 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel>{
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         socketChannel.pipeline()
-                .addLast(new TankJoinMsgEncoder())
-                .addLast(new TankJoinMsgDecoder())
+                .addLast(new MsgEncoder())
+                .addLast(new MsgDecoder())
                 .addLast(new ClientHandler());
     }
 }
@@ -80,6 +74,7 @@ class ClientHandler extends SimpleChannelInboundHandler<Msg>{
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Msg msg) throws Exception {
+        System.out.println(msg);
         msg.handle();
     }
 
