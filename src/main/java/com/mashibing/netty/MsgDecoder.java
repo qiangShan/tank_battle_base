@@ -9,11 +9,12 @@ import java.util.List;
 
 public class MsgDecoder extends ByteToMessageDecoder {
     @Override
-    protected void decode(ChannelHandlerContext context, ByteBuf in, List<Object> out) {
+    protected void decode(ChannelHandlerContext context, ByteBuf in, List<Object> out) throws Exception {
 
         if(in.readableBytes()<8){  //TCP拆包和粘包问题
             return;
         }
+
         in.markReaderIndex();
 
         MsgType msgType=MsgType.values()[in.readInt()];
@@ -30,6 +31,10 @@ public class MsgDecoder extends ByteToMessageDecoder {
         Msg msg=null;
 
         //reflection
+        msg=(Msg) Class.forName("com.mashibing.netty."+msgType.toString()+"Msg").getDeclaredConstructor().newInstance();
+
+
+        /**reflection
         //Class.forName(msgType.toString+"msg").constructor.newInstance();
         switch (msgType){
             case TankJoin:
@@ -44,6 +49,7 @@ public class MsgDecoder extends ByteToMessageDecoder {
             default:
                 break;
         }
+       */
 
         msg.parse(bytes);
         out.add(msg);

@@ -17,8 +17,6 @@ public class TankFrame extends Frame {
 
     public static final TankFrame INSTANCE=new TankFrame();
 
-    static final int GAME_WIDTH=960,GAME_HEIGHT=720;
-
     Random r=new Random();
 
     Tank myTank=new Tank(r.nextInt(GAME_WIDTH),r.nextInt(GAME_HEIGHT),Dir.DOWN,Group.GOOD,this);
@@ -26,15 +24,30 @@ public class TankFrame extends Frame {
     public Map<UUID,Tank> tanks=new HashMap<>();
     public List<Explode> explodes=new ArrayList<>();
 
+    static final int GAME_WIDTH=960,GAME_HEIGHT=720;
+
+    public void addBullet(Bullet b){
+        bullets.add(b);
+    }
+
+    public void addTank(Tank t){
+        tanks.put(t.getId(),t);
+    }
+
+    public Tank findTankByUUID(UUID id){
+        return tanks.get(id);
+    }
+
+
     public TankFrame(){
-        this.setSize(GAME_WIDTH,GAME_HEIGHT);
-        this.setResizable(false);
-        this.setTitle("tank_battle");
-        this.setVisible(true);
+        setSize(GAME_WIDTH,GAME_HEIGHT);
+        setResizable(false);
+        setTitle("tank war");
+        //this.setVisible(true);
 
         this.addKeyListener(new MyKeyListener());
 
-        this.addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
@@ -65,9 +78,9 @@ public class TankFrame extends Frame {
 
         Color color = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("子弹的数量:"+bullets.size(),10,60);
-        g.drawString("敌人坦克的数量:"+tanks.size(),10,80);
-        g.drawString("爆炸的数量:"+explodes.size(),10,100);
+        g.drawString("bullets:"+bullets.size(),10,60);
+        g.drawString("tanks:"+tanks.size(),10,80);
+        g.drawString("explodes:"+explodes.size(),10,100);
         g.setColor(color);
 
         myTank.paint(g);
@@ -88,37 +101,24 @@ public class TankFrame extends Frame {
         }
 
         //collision detect
+        /*
         Collection<Tank> values=tanks.values();
         for(int i=0;i<bullets.size();i++){
             for (Tank t:values){
                 bullets.get(i).collideWith(t);
             }
         }
+        */
+    }
 
-        /**
-         //画敌人坦克
-         for(int i=0 ;i<tanks.size();i++){
-         tanks.get(i).paint(g);
-         }
-         */
-
-        /**
-        //碰撞检测，判断子弹是否与坦克相撞
-        for(int i=0;i<bullets.size();i++){
-            for(int j=0;j<tanks.size();j++){
-                bullets.get(i).collideWith(tanks.get(j));
+    public Bullet findBulletByUUID(UUID bulletId) {
+        for(int i=0; i<bullets.size(); i++){
+            if(bullets.get(i).getId().equals(bulletId)){
+                return bullets.get(i);
             }
         }
-         */
 
-    }
-
-    public Tank finByUUID(UUID id) {
-        return tanks.get(id);
-    }
-
-    public void addTank(Tank t) {
-        tanks.put(t.getId(),t);
+        return null;
     }
 
     class MyKeyListener extends KeyAdapter{
@@ -136,21 +136,23 @@ public class TankFrame extends Frame {
             switch (key){
                 case KeyEvent.VK_LEFT:
                     bL=true;
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_UP:
                     bU=true;
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_RIGHT:
                     bR=true;
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_DOWN:
                     bD=true;
+                    setMainTankDir();
                     break;
                 default:
                     break;
             }
-
-            setMainTankDir();
 
         }
 
@@ -161,15 +163,19 @@ public class TankFrame extends Frame {
             switch (key){
                 case KeyEvent.VK_LEFT:
                     bL=false;
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_UP:
                     bU=false;
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_RIGHT:
                     bR=false;
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_DOWN:
                     bD=false;
+                    setMainTankDir();
                     break;
                 case KeyEvent.VK_CONTROL:
                     myTank.fire();
@@ -177,25 +183,34 @@ public class TankFrame extends Frame {
                 default:
                     break;
             }
-
-            setMainTankDir();
         }
 
         private void setMainTankDir() {
+
+            Dir dir=myTank.getDir();
 
             if(!bL && !bU && !bR && !bD){
                 myTank.setMoving(false);
                 Client.INSTANCE.send(new TankStopMsg(getMainTank()));
             }else{
-                if(bL) myTank.setDir(Dir.LEFT);
-                if(bU) myTank.setDir(Dir.UP);
-                if(bR) myTank.setDir(Dir.RIGHT);
-                if(bD) myTank.setDir(Dir.DOWN);
+
+                if(bL)
+                    myTank.setDir(Dir.LEFT);
+                if(bU)
+                    myTank.setDir(Dir.UP);
+                if(bR)
+                    myTank.setDir(Dir.RIGHT);
+                if(bD)
+                    myTank.setDir(Dir.DOWN);
                 //发出坦克移动消息
                 if(!myTank.isMoving())
                     Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
 
                 myTank.setMoving(true);
+
+                if(dir !=myTank.getDir()){
+                    //Client.INSTANCE.send(new TankDirChangedMsg(myTank));
+                }
             }
         }
     }

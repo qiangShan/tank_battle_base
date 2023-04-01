@@ -1,12 +1,21 @@
 package com.mashibing.tank;
 
+import com.mashibing.netty.Client;
+import com.mashibing.netty.TankDieMsg;
+
 import java.awt.*;
+import java.util.UUID;
 
 public class Bullet {
 
-    private static final int SPEED=10;
+    private static final int SPEED=6;
+
     public static final int WIDTH=ResourceMgr.bulletD.getWidth();
+
     public static final int HEIGHT=ResourceMgr.bulletD.getHeight();
+
+    private UUID id=UUID.randomUUID();
+    private UUID playerId;
 
     private int x,y;
     private Dir dir;
@@ -17,7 +26,8 @@ public class Bullet {
 
     private boolean living =true;
 
-    public Bullet(int x, int y, Dir dir ,Group group , TankFrame tf) {
+    public Bullet(UUID playerId, int x, int y, Dir dir ,Group group , TankFrame tf) {
+        this.playerId=playerId;
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -61,6 +71,22 @@ public class Bullet {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(UUID playerId) {
+        this.playerId = playerId;
     }
 
     public void paint(Graphics g) {
@@ -116,17 +142,18 @@ public class Bullet {
 
     }
 
+    /*
     public void collideWith(Tank tank) {
-        if(this.group == tank.getGroup())  return;
-
-        if(rect.intersects(tank.rect)){
+        if(this.playerId.equals(tank.getId()))
+            return;
+        if(this.living && tank.isLiving() && this.rect.intersects(tank.rect)){
             tank.die();
             this.die();
-            int eX=tank.getX()+Tank.WIDTH/2-Explode.WIDTH/2;
-            int eY=tank.getY()+Tank.HEIGHT/2-Explode.HEIGHT/2;
-            tf.explodes.add(new Explode(eX,eY,tf));
+            Client.INSTANCE.send(new TankDieMsg(this.id,tank.getId()));
         }
     }
+    *
+     */
 
     public void die() {
         this.living=false;

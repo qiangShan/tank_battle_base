@@ -7,34 +7,32 @@ import com.mashibing.tank.TankFrame;
 import java.io.*;
 import java.util.UUID;
 
-public class TankStartMovingMsg extends Msg{
+public class TankDirChangedMsg extends Msg{
 
     UUID id;
-    int x,y;
-
     Dir dir;
 
-    public TankStartMovingMsg(){
+    int x,y;
 
+    public TankDirChangedMsg(){}
+
+    public TankDirChangedMsg(Tank t){
+        this.id=t.getId();
+        this.dir=t.getDir();
+        this.x=t.getX();
+        this.y=t.getY();
     }
 
-    public TankStartMovingMsg(UUID id, int x, int y, Dir dir) {
+    public TankDirChangedMsg(UUID id,  int x, int y, Dir dir) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.dir = dir;
     }
 
-    public TankStartMovingMsg(Tank tank){
-        this.id=tank.getId();
-        this.x=tank.getX();
-        this.y=tank.getY();
-        this.dir=tank.getDir();
-    }
-
     @Override
     public MsgType getMsgType() {
-        return MsgType.TankStartMoving;
+        return MsgType.TankDirChanged;
     }
 
     @Override
@@ -42,13 +40,14 @@ public class TankStartMovingMsg extends Msg{
 
         if(this.id.equals(TankFrame.INSTANCE.getMainTank().getId()))
             return;
+
         Tank t=TankFrame.INSTANCE.findTankByUUID(this.id);
 
-        if(t !=null){
+        if(t != null){
             t.setMoving(true);
             t.setX(this.x);
             t.setY(this.y);
-            t.setDir(dir);
+            this.setDir(this.dir);
         }
     }
 
@@ -57,7 +56,6 @@ public class TankStartMovingMsg extends Msg{
         DataInputStream dis=new DataInputStream(new ByteArrayInputStream(bytes));
 
         try{
-
             this.id=new UUID(dis.readLong(),dis.readLong());
             this.x=dis.readInt();
             this.y=dis.readInt();
@@ -76,7 +74,6 @@ public class TankStartMovingMsg extends Msg{
 
     @Override
     public byte[] toBytes() {
-
         ByteArrayOutputStream baos=null;
         DataOutputStream dos=null;
         byte[] bytes=null;
@@ -85,33 +82,31 @@ public class TankStartMovingMsg extends Msg{
 
             baos=new ByteArrayOutputStream();
             dos=new DataOutputStream(baos);
-
             dos.writeLong(id.getMostSignificantBits());
             dos.writeLong(id.getLeastSignificantBits());
             dos.writeInt(x);
             dos.writeInt(y);
             dos.writeInt(dir.ordinal());
             dos.flush();
-
             bytes=baos.toByteArray();
 
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            if(baos != null){
-                try {
+            try{
+                if(baos != null){
                     baos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            }catch (IOException e){
+                e.printStackTrace();
             }
 
-            if(dos != null){
-                try {
+            try{
+                if(dos != null){
                     dos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            }catch (IOException e){
+                e.printStackTrace();
             }
         }
 
@@ -119,17 +114,15 @@ public class TankStartMovingMsg extends Msg{
     }
 
     @Override
-    public String toString(){
-        StringBuilder builder=new StringBuilder();
-
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
         builder.append(this.getClass().getName())
                 .append("[")
-                .append("uuid="+id+"|")
-                .append("x="+x+"|")
-                .append("y="+y+"|")
-                .append("dir="+dir+"|")
+                .append("uuid=" + id + " | ")
+                .append("x=" + x + " | ")
+                .append("y=" + y + " | ")
+                .append("dir=" + dir + " | ")
                 .append("]");
-
         return builder.toString();
     }
 
@@ -139,6 +132,14 @@ public class TankStartMovingMsg extends Msg{
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
     }
 
     public int getX() {
@@ -155,13 +156,5 @@ public class TankStartMovingMsg extends Msg{
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public Dir getDir() {
-        return dir;
-    }
-
-    public void setDir(Dir dir) {
-        this.dir = dir;
     }
 }
