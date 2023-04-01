@@ -27,6 +27,8 @@ public class Server {
                         protected void initChannel(SocketChannel channel) throws Exception {
                             //System.out.println(Thread.currentThread().getId());
                             ChannelPipeline pl = channel.pipeline();
+                            pl.addLast(new MsgEncoder());
+                            pl.addLast(new MsgDecoder());
                             pl.addLast(new ServerChildHandler());
                         }
                     })
@@ -56,29 +58,8 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter{  //SimpleChannelI
     @Override
     public void channelRead(ChannelHandlerContext context,Object msg) throws Exception{
 
+        ServerFrame.INSTANCE.updateClientMsg(msg.toString());
         Server.clients.writeAndFlush(msg);
-
-        /**
-        ByteBuf buf=null;
-        try{
-            buf=(ByteBuf) msg;
-            byte[] bytes = new byte[buf.readableBytes()];
-            buf.getBytes(buf.readerIndex(),bytes);
-            String s=new String(bytes);
-
-            ServerFrame.INSTANCE.updateClientMsg(s);
-
-            if(s.equals("_bye_")){
-                ServerFrame.INSTANCE.updateServerMsg("客户端请求退出，请允许");
-                Server.clients.remove(context.channel());
-                context.close();
-            }else{
-                Server.clients.writeAndFlush(msg);
-            }
-        }finally {
-
-        }
-         */
     }
 
     @Override
