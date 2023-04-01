@@ -1,5 +1,8 @@
 package com.mashibing.tank;
 
+import com.mashibing.netty.Client;
+import com.mashibing.netty.TankStartMovingMsg;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -175,6 +178,8 @@ public class TankFrame extends Frame {
                 if(bU) myTank.setDir(Dir.UP);
                 if(bR) myTank.setDir(Dir.RIGHT);
                 if(bD) myTank.setDir(Dir.DOWN);
+
+                Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
             }
         }
     }

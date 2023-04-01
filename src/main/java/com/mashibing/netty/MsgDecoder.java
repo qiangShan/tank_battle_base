@@ -1,15 +1,13 @@
 package com.mashibing.netty;
 
-import com.mashibing.tank.Dir;
-import com.mashibing.tank.Group;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
-import java.util.UUID;
 
-public class TankJoinMsgDecoder extends ByteToMessageDecoder {
+
+public class MsgDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext context, ByteBuf in, List<Object> out) {
 
@@ -29,14 +27,20 @@ public class TankJoinMsgDecoder extends ByteToMessageDecoder {
         byte[] bytes=new byte[length];
         in.readBytes(bytes);
 
+        Msg msg=null;
+
         switch (msgType){
             case TankJoin:
-                TankJoinMsg msg=new TankJoinMsg();
-                msg.parse(bytes);
-                out.add(msg);
+                msg=new TankJoinMsg();
+                break;
+            case TankStartMoving:
+                msg=new TankStartMovingMsg();
                 break;
             default:
                 break;
         }
+
+        msg.parse(bytes);
+        out.add(msg);
     }
 }
