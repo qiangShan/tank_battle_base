@@ -2,6 +2,7 @@ package com.mashibing.tank;
 
 import com.mashibing.netty.Client;
 import com.mashibing.netty.TankStartMovingMsg;
+import com.mashibing.netty.TankStopMsg;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -22,8 +23,8 @@ public class TankFrame extends Frame {
 
     Tank myTank=new Tank(r.nextInt(GAME_WIDTH),r.nextInt(GAME_HEIGHT),Dir.DOWN,Group.GOOD,this);
     public List<Bullet> bullets=new ArrayList<>();
-    Map<UUID,Tank> tanks=new HashMap<UUID,Tank>();
-    public List<Explode> explodes=new ArrayList<Explode>();
+    public Map<UUID,Tank> tanks=new HashMap<>();
+    public List<Explode> explodes=new ArrayList<>();
 
     public TankFrame(){
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
@@ -79,24 +80,36 @@ public class TankFrame extends Frame {
         //java8 stream api
         tanks.values().stream().forEach((e)->e.paint(g));
 
-        /**
-        //画敌人坦克
-        for(int i=0 ;i<tanks.size();i++){
-            tanks.get(i).paint(g);
-        }
-         */
+
 
         //爆炸展示
         for(int i=0;i<explodes.size();i++){
             explodes.get(i).paint(g);
         }
 
+        //collision detect
+        Collection<Tank> values=tanks.values();
+        for(int i=0;i<bullets.size();i++){
+            for (Tank t:values){
+                bullets.get(i).collideWith(t);
+            }
+        }
+
+        /**
+         //画敌人坦克
+         for(int i=0 ;i<tanks.size();i++){
+         tanks.get(i).paint(g);
+         }
+         */
+
+        /**
         //碰撞检测，判断子弹是否与坦克相撞
         for(int i=0;i<bullets.size();i++){
             for(int j=0;j<tanks.size();j++){
                 bullets.get(i).collideWith(tanks.get(j));
             }
         }
+         */
 
     }
 
@@ -172,14 +185,17 @@ public class TankFrame extends Frame {
 
             if(!bL && !bU && !bR && !bD){
                 myTank.setMoving(false);
+                Client.INSTANCE.send(new TankStopMsg(getMainTank()));
             }else{
-                myTank.setMoving(true);
                 if(bL) myTank.setDir(Dir.LEFT);
                 if(bU) myTank.setDir(Dir.UP);
                 if(bR) myTank.setDir(Dir.RIGHT);
                 if(bD) myTank.setDir(Dir.DOWN);
+                //发出坦克移动消息
+                if(!myTank.isMoving())
+                    Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
 
-                Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
+                myTank.setMoving(true);
             }
         }
     }
