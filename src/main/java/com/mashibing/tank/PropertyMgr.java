@@ -20,4 +20,8 @@ public class PropertyMgr {
             return null;
         return properties.get(key);
     }
+
+    public static void main(String[] args) {
+        System.out.println(PropertyMgr.get("initTankCount"));
+    }
 }

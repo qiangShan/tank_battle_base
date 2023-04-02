@@ -15,11 +15,11 @@ public class Server {
     public static ChannelGroup clients =new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     public void serverStart(){
-        EventLoopGroup boosGroup=new NioEventLoopGroup(2);
+        EventLoopGroup boosGroup=new NioEventLoopGroup(1);
         EventLoopGroup workGroup=new NioEventLoopGroup(2);
 
-        ServerBootstrap b=new ServerBootstrap();
         try {
+            ServerBootstrap b=new ServerBootstrap();
             ChannelFuture f=b.group(boosGroup,workGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {

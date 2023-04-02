@@ -10,12 +10,13 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 public class Client {
 
     public static final Client INSTANCE=new Client();
-    private Client(){}
-
     private Channel channel=null;
 
+    private Client(){}
+
+
     public void connect(){
-        EventLoopGroup group=new NioEventLoopGroup(2);
+        EventLoopGroup group=new NioEventLoopGroup(1);
         Bootstrap bs=new Bootstrap();
 
         try{
@@ -32,14 +33,16 @@ public class Client {
                         System.out.println("not connected!");
                     }else{
                         System.out.println("connected!");
+                        // initialize the channel
                         channel=future.channel();
                     }
                 }
             });
 
             cf.sync();
+            // wait until close
             cf.channel().closeFuture().sync();
-            System.out.println("已经退出");
+            System.out.println("connection closed!");
 
         }catch (Exception e){
             e.printStackTrace();

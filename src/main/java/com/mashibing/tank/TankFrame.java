@@ -24,7 +24,7 @@ public class TankFrame extends Frame {
     public Map<UUID,Tank> tanks=new HashMap<>();
     public List<Explode> explodes=new ArrayList<>();
 
-    static final int GAME_WIDTH=960,GAME_HEIGHT=720;
+    static final int GAME_WIDTH=1080,GAME_HEIGHT=960;
 
     public void addBullet(Bullet b){
         bullets.add(b);
@@ -36,6 +36,16 @@ public class TankFrame extends Frame {
 
     public Tank findTankByUUID(UUID id){
         return tanks.get(id);
+    }
+
+    public Bullet findBulletByUUID(UUID id) {
+        for(int i=0; i<bullets.size(); i++){
+            if(bullets.get(i).getId().equals(id)){
+                return bullets.get(i);
+            }
+        }
+
+        return null;
     }
 
 
@@ -58,6 +68,7 @@ public class TankFrame extends Frame {
 
     //解决游戏中的双闪问题
     Image offScreenImage=null;
+
     @Override
     public void update(Graphics graphics){
         if(offScreenImage == null){
@@ -93,32 +104,18 @@ public class TankFrame extends Frame {
         //java8 stream api
         tanks.values().stream().forEach((e)->e.paint(g));
 
-
-
         //爆炸展示
         for(int i=0;i<explodes.size();i++){
             explodes.get(i).paint(g);
         }
 
         //collision detect
-        /*
         Collection<Tank> values=tanks.values();
         for(int i=0;i<bullets.size();i++){
             for (Tank t:values){
                 bullets.get(i).collideWith(t);
             }
         }
-        */
-    }
-
-    public Bullet findBulletByUUID(UUID bulletId) {
-        for(int i=0; i<bullets.size(); i++){
-            if(bullets.get(i).getId().equals(bulletId)){
-                return bullets.get(i);
-            }
-        }
-
-        return null;
     }
 
     class MyKeyListener extends KeyAdapter{
@@ -153,6 +150,8 @@ public class TankFrame extends Frame {
                 default:
                     break;
             }
+
+           // new Thread(()->new Audio("audio/tank_move.wav").play()).start();
 
         }
 
